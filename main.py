@@ -118,17 +118,17 @@ def draw_menu(stdscr, connections, selected_idx, scroll_offset, sort_mode_idx):
     sort_name = SORT_MODES[sort_mode_idx][0]
     title = f" Network Monitor | Sort: {sort_name} (s) | Kill (k) | Quit (q) "
     # Ensure title fits
-    title = title[:width]
+    title = title[:width-1]
     stdscr.attron(curses.color_pair(1) | curses.A_BOLD)
     stdscr.addstr(0, 0, title)
-    stdscr.addstr(0, len(title), " " * (width - len(title)))
+    stdscr.clrtoeol()
     stdscr.attroff(curses.color_pair(1) | curses.A_BOLD)
     
     # --- Header ---
     header = f"{'PID':<8} {'USER':<12} {'PROCESS':<18} {'DL RATE':<10} {'UL RATE':<10} {'LADDR':<22} {'RADDR':<22}"
     stdscr.attron(curses.color_pair(2) | curses.A_BOLD)
-    stdscr.addstr(1, 0, header[:width])
-    stdscr.addstr(1, len(header[:width]), " " * (width - len(header[:width])))
+    stdscr.addstr(1, 0, header[:width-1])
+    stdscr.clrtoeol()
     stdscr.attroff(curses.color_pair(2) | curses.A_BOLD)
     
     # --- List ---
@@ -153,7 +153,7 @@ def draw_menu(stdscr, connections, selected_idx, scroll_offset, sort_mode_idx):
     
     for i, conn in enumerate(visible_conns):
         row_idx = 2 + i
-        if row_idx >= height:
+        if row_idx >= height - 1:
             break
             
         is_selected = (i + scroll_offset == selected_idx)
@@ -169,10 +169,8 @@ def draw_menu(stdscr, connections, selected_idx, scroll_offset, sort_mode_idx):
             style = curses.A_REVERSE | curses.color_pair(3)
         
         try:
-            stdscr.addstr(row_idx, 0, line[:width], style)
-            # Fill rest of line
-            if len(line) < width:
-                stdscr.addstr(row_idx, len(line), " " * (width - len(line)), style)
+            stdscr.addstr(row_idx, 0, line[:width-1], style)
+            stdscr.clrtoeol()
         except curses.error:
             pass
 
@@ -180,8 +178,8 @@ def draw_menu(stdscr, connections, selected_idx, scroll_offset, sort_mode_idx):
     status = f" Total Connections: {len(connections)} | Selected: {selected_idx + 1}/{len(connections)} "
     try:
         stdscr.attron(curses.color_pair(1))
-        stdscr.addstr(height - 1, 0, status[:width])
-        stdscr.addstr(height - 1, len(status), " " * (width - len(status)))
+        stdscr.addstr(height - 1, 0, status[:width-1])
+        stdscr.clrtoeol()
         stdscr.attroff(curses.color_pair(1))
     except curses.error:
         pass
