@@ -3,7 +3,6 @@
 A lightweight, interactive command-line tool for monitoring network usage per process on Linux. Built with Python and `curses`, it provides real-time insights into active connections, bandwidth usage, and allows for process management directly from the terminal.
 
 ![Network Monitor Screenshot](screenshot.png)
-*(Replace with actual screenshot if available)*
 
 ## Features
 
